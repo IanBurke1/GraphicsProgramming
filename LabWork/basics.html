@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Basics</title>
+
+		<style type="text/css">
+		  body {
+			  background-color: white; 
+		  }
+		  canvas{ 
+		  
+		  border: dotted;
+		  border-width: 5px;
+		  border-spacing 10px 10px;
+		  color: blue;
+		  }
+		</style>
+ 
+  </head>
+ <body>
+
+    <canvas id="canvasOne" width="500" height="500"></canvas>
+	<script type="text/javascript">
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("canvasOne");
+      // Set the canvas up for drawing in 2D.
+      var ctx = canvas.getContext("2d");
+	  
+	  
+	  
+	  
+	  /*function move(xpos, ypos) {
+	  xpos = xpos;
+	  ypos = ypos;
+	  }*/
+	  
+	  //creating ball object
+	  var ball = {
+		 x: 50
+		,y: 50
+		,r: 25
+		, move_ball: function(xpos, ypos){//Moving the ball
+			this.x = xpos;
+			this.y = ypos;
+		}
+		, resize_ball: function(resize){ //resizing the ball
+			this.r = resize;
+		}
+		, draw_ball: function(){//draw the ball
+			
+			ctx.beginPath();//new path after each method called
+			ctx.arc(this.x,this.y,this.r,0,2*Math.PI); //creating the circle
+			ctx.fillStyle = "rgb(255, 165, 0)";
+			ctx.fill();
+			//Drawing the 7 slice pizza
+			//creating a line from right to the center of circle
+			//ctx.moveTo(this.x+this.r,this.y);
+			ctx.lineTo(this.x, this.y);
+			//creating a line from bottom to center
+			ctx.lineTo(this.x, this.y+this.r);
+			//creating a line from left to center
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.x-this.r, this.y);
+			//creating a line from top to center
+			ctx.moveTo(this.x, this.y);
+			//ctx.lineTo(this.x, this.y-this.r);
+			
+			//draw diagonal lines from the center 
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.x+(this.r*Math.cos(.25*Math.PI)), this.y+(this.r*Math.sin(.25*Math.PI)));
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.x+(this.r*Math.cos(.75*Math.PI)), this.y+(this.r*Math.sin(.75*Math.PI)));
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.x+(this.r*Math.cos(1.25*Math.PI)), this.y+(this.r*Math.sin(1.25*Math.PI)));
+			ctx.moveTo(this.x, this.y);
+			ctx.lineTo(this.x+(this.r*Math.cos(1.75*Math.PI)), this.y+(this.r*Math.sin(1.75*Math.PI)));
+			
+			
+			ctx.stroke();
+			
+		}                                                   
+	  };//ball end
+	  
+		  //drawing, resizing and moving the 1st ball 
+		  ball.draw_ball();
+		  ball.move_ball(150, 150);
+		  ball.resize_ball(50);
+		  //drawing, resizing and moving the 2nd ball 
+		  ball.draw_ball();
+		  ball.move_ball(250, 250);
+		  ball.resize_ball(80);  
+		    //drawing, resizing and moving the 3rd ball 
+		  ball.draw_ball();
+		  ball.move_ball(250, 250);
+		  ball.resize_ball(80); 
+	  
+	  
+	  
+    </script>
+
+ </body>
+
+</html>

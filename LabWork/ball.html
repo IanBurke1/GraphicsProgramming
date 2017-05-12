@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>ball</title>
+
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+	  canvas {
+		border: 1px solid rgb(100, 100, 100);
+		}
+
+    </style>
+
+  </head>
+
+  <body>
+  
+    <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+
+    <script type="text/javascript">
+      // Gets a handle to the element with id canvasOne.
+      var canvas = document.getElementById("canvas-for-ball");
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+	  
+	  var width = "500";
+	  var height = "500";
+      
+      // The vertical location of the ball.
+    /*  var y = 10;
+	  var x = 50;*/
+	  var dy = 2.8;
+	  var dx = 1; 
+	  var ball = {
+	  x: 50,
+	  y: 10,
+	  r: 15
+	  }
+	  
+      // A function to repeat every time the animation loops.
+      function repeatme() {
+        // Draw the ball (stroked, not filled).
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+		ctx.clearRect(0, 0, width, height);
+        ctx.stroke();
+		ctx.fillStyle = "rgb(255, 165, 0)";
+		ctx.fill();
+		
+		
+		//Drawing the 7 slice pizza
+			//creating a line from right to the center of circle
+			//ctx.moveTo(this.x+this.r,this.y);
+			ctx.lineTo(ball.x, ball.y);
+			//creating a line from bottom to center
+			ctx.lineTo(ball.x, ball.y+ball.r);
+			//creating a line from left to center
+			ctx.moveTo(ball.x, ball.y);
+			ctx.lineTo(ball.x-ball.r, ball.y);
+			//creating a line from top to center
+			ctx.moveTo(ball.x, ball.y);
+			//ctx.lineTo(this.x, this.y-this.r);
+			
+			//draw diagonal lines from the center 
+			ctx.moveTo(ball.x, ball.y);
+			ctx.lineTo(ball.x+(ball.r*Math.cos(.25*Math.PI)), ball.y+(ball.r*Math.sin(.25*Math.PI)));
+			ctx.moveTo(ball.x, ball.y);
+			ctx.lineTo(ball.x+(ball.r*Math.cos(.75*Math.PI)), ball.y+(ball.r*Math.sin(.75*Math.PI)));
+			ctx.moveTo(ball.x, ball.y);
+			ctx.lineTo(ball.x+(ball.r*Math.cos(1.25*Math.PI)), ball.y+(ball.r*Math.sin(1.25*Math.PI)));
+			ctx.moveTo(ball.x, ball.y);
+			ctx.lineTo(ball.x+(ball.r*Math.cos(1.75*Math.PI)), ball.y+(ball.r*Math.sin(1.75*Math.PI)));
+			
+			
+			ctx.stroke();
+		
+		
+        // Update the y location.
+		/*y += 2;
+		x += 1;
+		//If the ball hits the bottom of the canvas
+		if (y == 490){
+			y += dy; //stop the ball
+			x += dx;
+			}*/
+			ball.x+=dx; 
+			ball.y+=dy; 
+		
+			
+			if( ball.x>=490){
+			dx = -1;
+			}
+			if (ball.x<= 9) {
+			dx  =1;
+			}
+			if( ball.y<=9){
+			dy = 2.8;
+			}
+			if(ball.y>=490) {
+			dy=-1; 
+			
+			}
+
+        
+        window.requestAnimationFrame(repeatme);
+		
+		
+      }
+	
+	 repeatme();
+      
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+			
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball"></canvas>
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvasOne.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		//Changing the width and height of the canvas.
+		function init(){
+			canvas.width = 500;
+			canvas.height = 500;
+		}
+		
+		//Ball object 
+		var ball = {
+			x: 150,
+			y: 150,
+			r: 50,
+	     	dx: -1 ,
+		    dy:2.8,
+			//draw the ball
+			draw: function() {
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.r, 0, Math.PI*2, false);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.stroke();
+			},//move the ball
+			move: function(xpos, ypos) {
+				this.x += xpos;
+				this.y += ypos;
+			}, //resizing the ball
+			resize: function (radius) {
+				this.r = radius;
+			}, //Adding colour to the ball
+			setColour: function() {
+				ctx.fillStyle = "rgb(255, 255, 0)"; //filling in the colour
+				ctx.fill(); //fill the ball with colour
+			},
+		}; //end of ball object
+
+		//repeatme function to get the ball rolling! ;)
+		function repeatme() {
+
+			//Adding the velocity to the ball. 
+			ball.x+=ball.dx; 
+			ball.y+=ball.dy; 
+			
+			//If the ball collides with the edges of canvas.
+			if( ball.x >= canvas.width-ball.r){ //right side of canvas
+			ball.dx = ball.dx * -1; 
+			}
+			if (ball.x <= ball.r) { //left side of canvas
+			ball.dx  = ball.dx * -1;
+			}
+			if( ball.y >= canvas.height - ball.r){ //bottom of canvas
+			ball.dy = ball.dy * -1;
+			}
+			if(ball.y <= ball.r) { //top of canvas
+			ball.dy= ball.dy * -1; 
+			
+			}
+			
+			//ball.move();
+			ball.draw();
+			ball.setColour();
+		
+			//Animate the repeatme function.. ie. Moving the ball 
+			window.requestAnimationFrame(repeatme);
+			
+		
+      }
+      init(); //calling the init method. Changes the width and height of canvas
+	  repeatme(); //calling the repeatme method. 
+	 			
+
+		
+		
+		/*function Ball(x, y, r, xVel, yVel, mass){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.xVel = xVel;
+			this.yVel = yVel;
+			this.mass = mass;
+			
+			this.draw = function () {
+				ctx.beginPath();
+				ctx.arc (this.x, this.y, this.r, 0, Math.PI*2, false);
+				ctx.stroke();
+			}
+			
+			this.resize = function(radius){
+				this.r = radius;
+			}
+			
+			this.move = function (xpos, ypos){
+				this.x += xpos;
+				this.y += ypos;
+			}
+		}
+		*/
+		
+	
+    </script>
+
+  </body>
+
+</html>

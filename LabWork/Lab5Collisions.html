@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<!--Ian Burke - G00307742-->
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+			
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball"></canvas>
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvasOne.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		
+		//========GLOBAL VARIABLES======================================
+		//Collision function variables:
+		var col_angle;
+		var ma1;
+		var ma2;
+		var direction1;
+		var direction2;
+		var newXVel1;
+		var newXVel2;
+		var newYVel1;
+		var newYVel2;
+		var final_XVel1;
+		var final_XVel2;
+		var final_YVel1;
+		var final_YVel2;
+		//================================================================
+		//var gravity = 0.2;
+		
+		//Changing the width and height of the canvas.
+		function init()
+		{
+			canvas.width = 500;
+			canvas.height = 500;
+		}//init end
+		
+		//Clear function used to clear the canvas as the balls move.
+		function clear()
+		{
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		}//clear end
+		
+		//Ball object
+		function ball(x, y, r, xVel, yVel, mass)
+		{
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.xVel = xVel;
+			this.yVel = yVel;
+			this.mass = mass;
+			
+			this.draw = function ()  //draw the ball
+			{
+				ctx.beginPath();
+				ctx.arc (this.x, this.y, this.r, 0, Math.PI*2, false);
+				
+				//Drawing the pizza
+				//creating a line from right to the center of circle
+				ctx.moveTo(this.x+this.r,this.y);
+				ctx.lineTo(this.x, this.y);
+				//creating a line from bottom to center
+				//ctx.lineTo(this.x, this.y+this.r);
+				//creating a line from left to center
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x-this.r, this.y);
+				//creating a line from top to center
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x, this.y-this.r);
+				
+				//draw diagonal lines from the center 
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x+(this.r*Math.cos(.25*Math.PI)), this.y+(this.r*Math.sin(.25*Math.PI)));
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x+(this.r*Math.cos(.75*Math.PI)), this.y+(this.r*Math.sin(.75*Math.PI)));
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x+(this.r*Math.cos(1.25*Math.PI)), this.y+(this.r*Math.sin(1.25*Math.PI)));
+				ctx.moveTo(this.x, this.y);
+				ctx.lineTo(this.x+(this.r*Math.cos(1.75*Math.PI)), this.y+(this.r*Math.sin(1.75*Math.PI)));
+				
+			}
+			this.resize = function(radius) //resize the ball
+			{
+				this.r = radius;
+			}
+			
+			this.move = function () //move the ball
+			{
+				var y;
+				//Adding the velocity to the ball. 
+				this.x+=this.xVel; 
+				this.y+=this.yVel; 
+				
+				//If the ball collides with the edges of canvas.
+				if( this.x >= canvas.width-this.r){ //right side of canvas
+				this.xVel = this.xVel * -1; 
+				}
+				if (this.x <= this.r) { //left side of canvas
+				this.xVel  = this.xVel * -1;
+				}
+				if( this.y >= canvas.height - this.r){ //bottom of canvas
+				this.yVel = this.yVel * -1;
+				}
+				if(this.y <= this.r) { //top of canvas
+				this.yVel= this.yVel * -1; 
+				}
+				//this.yVel += gravity;
+			}
+			this.setColour = function (col) //setting the colour
+			{
+				ctx.fillStyle = col;
+                ctx.fill();
+				ctx.stroke();
+			}
+		}//ball end 
+		
+		//Creating new objects. 
+		var b1 = new ball(150,150,30,3,6,10);
+		var b2 = new ball(100,120,20,2,1,5);
+		
+		//Collision Detection function
+		function collision()
+		{
+			dx = b1.x - b2.x; //Calculate horizontal distance between balls
+			dy = b1.y - b2.y; //calculate vertical between balls
+			distance = Math.sqrt((dx * dx) + (dy * dy)); //Determine distance between two points
+			 
+			if(distance <= b1.r + b2.r){ //If the distance is less than or equal the sum of b1.radius and b2.radius then collide...
+			col_angle = Math.atan2(dy,dx); //Calculate the collision angle using trigonometry
+			
+			mag1 = Math.sqrt(b1.xVel*b1.xVel+b1.yVel*b1.yVel); //Calculate ball 1 speed (Magnitude)
+			mag2 = Math.sqrt(b2.xVel*b2.xVel+b2.yVel*b2.yVel); //Calculate ball 2 speed (Magnitude)
+			
+			//Determine ball direction using trigonometry
+			direction1 = Math.atan2(b1.yVel, b1.xVel);
+			direction2 = Math.atan2(b2.yVel, b2.xVel);
+			
+			//Calculate new xVel/yVel using trig applied to the difference between the direction angle and the collison angle
+			newXVel1 = mag1 * Math.cos(direction1-col_angle);
+            newYVel1 = mag1 * Math.sin(direction1-col_angle);
+            newXVel2 = mag2 * Math.cos(direction2-col_angle);
+            newYVel2 = mag2 * Math.sin(direction2-col_angle);
+			
+			//Determine final x speed for ball 1
+			final_XVel1 = ((b1.mass-b2.mass)*newXVel1+(b2.mass+b2.mass)*newXVel2)/(b1.mass+b2.mass);
+            //Determine final x speed for ball 2
+            final_XVel2 = ((b1.mass+b1.mass)*newXVel1+(b2.mass-b1.mass)*newXVel2)/(b1.mass+b2.mass);
+            //Y speed doesnt change as its only a 1 dimension collision
+            final_YVel1 = newYVel1;
+            final_YVel2 = newYVel2;
+			//Determine x and y speeds on the original axis system using trig.
+			b1.xVel = Math.cos(col_angle)*final_XVel1+Math.cos(col_angle+Math.PI/2)*final_YVel1;
+            b1.yVel = Math.sin(col_angle)*final_XVel1+Math.sin(col_angle+Math.PI/2)*final_YVel1;
+            b2.xVel = Math.cos(col_angle)*final_XVel2+Math.cos(col_angle+Math.PI/2)*final_YVel2;
+            b2.yVel = Math.sin(col_angle)*final_XVel2+Math.sin(col_angle+Math.PI/2)*final_YVel2;
+			
+			console.log("Collision Detected!") //Print a message to the console every time a collision is detected.
+			}
+			
+		}//end collision
+		
+		
+
+		//repeatme function to get the ball rolling! :)
+		function repeatme() 
+		{
+			clear();
+			collision();
+			b1.move();
+			b2.move();
+			
+			b1.setColour("orange");
+			b1.draw();
+			b2.setColour("yellow");
+			b2.draw();
+		
+			//Animate the repeatme function.. ie. Moving the ball 
+			window.requestAnimationFrame(repeatme);
+			
+		
+      }//repeatme end 
+	  
+
+		init(); //calling the init method. Changes the width and height of canvas
+		repeatme(); //calling the repeatme method. 
+	  
+
+		
+		
+
+		
+		
+	
+    </script>
+
+  </body>
+
+</html>

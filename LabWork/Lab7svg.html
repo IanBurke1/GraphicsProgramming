@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <!-- CSS -->
+	 <style type="text/css">
+		#circle {
+		 fill: blue;
+		 stroke: black;
+		 stroke-width: 4;
+		}
+		#eye {
+			fill: black;
+			
+		}
+
+
+	 </style>
+ </head>
+ <body>
+	 <svg width="500" height="500"> <!-- Setting the width and height for svg-->
+		<!-- Creating a Rectangle with its attributes-->
+		<rect x="50" y="50" width="100" height="200" style="fill:rgb(0,255,0);stroke-width:5;stroke:rgb(0,0,0)" />
+		<!-- Creating a circle-->
+		<circle id="circle" cx="100" cy="100" r="20" />
+		<!-- Adding text-->
+		<text x="100" y="200" font-size="24" fill="green" stroke="black">Ian</text>
+		
+		<!-- Using Path to draw pacman-->
+		<path d="M 300 90 
+			A 45 45, 1, 1, 0, 300 130 
+			L 270 110 Z"fill="yellow" stroke="black" /> 
+			<!-- M for move-->
+			<!-- A for the arc-->
+			<!-- L for line-to and Z for close path --> 
+				
+		<!-- Pacmans eye -->		
+		<circle id="eye" cx="270" cy="90" r="3" fill="black" /> 
+		
+	 </svg>
+	 
+	<script type="text/javascript">
+		//Creating svg object by using the circle element 
+		var svg = document.getElementById("circle"); 
+		
+		//Moving the circle after 2 seconds
+		var move = setInterval(moveCircle, 1500);
+		
+		//move function 
+		function moveCircle()
+		{
+			svg.setAttribute("cx", "150"); //moving the x pos
+			svg.setAttribute("cy", "150"); //moving the y pos
+			 clearInterval(move);	//clear the interval
+		}
+
+		
+	
+	</script>
+ </body>
+</html>

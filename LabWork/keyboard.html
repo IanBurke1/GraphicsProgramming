@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+			
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvasOne.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		// Make the fill style red.
+		//ctx.fillStyle = "rgb(0, 255, 0)";
+		//ctx.fillRect(500,500,150,100);
+		
+		
+		  	
+		 var noClicks = 0;		
+		  //Changing the global corodinates to local canvas corodinates
+		 var canvasPos = {
+			x: canvas.offsetLeft, 
+			y: canvas.offsetTop
+			};	
+		  //canvas width and height for clearRect
+		 canvas.width = "500";
+		 canvas.height = "500";
+		 //Creating the velocity of the ball	
+		 var dy = 3;
+		 var dx = 1; 
+		 //Creating the ball object 
+	     var ball = {
+		  x: 100,
+		  y: 100,
+		  r: 15
+		  }
+		  
+	   // A function to repeat every time the animation loops.
+      function repeatme() {
+        // Draw the ball (stroked, not filled).
+        ctx.beginPath();
+		//creating the circle shape
+        ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = "rgb(255, 165, 0)"; //filling in the colour
+		ctx.fill(); //fill the ball with colour
+		ctx.stroke();
+		
+		//adding velocity to x and y
+		ball.x+=dx; 
+		ball.y+=dy; 
+		
+			
+		//If the ball collides with the edges of canvas.
+		if( ball.x >= canvas.width-ball.r){ //right side of canvas
+		dx = dx * -1; 
+		}
+		if (ball.x <= ball.r) { //left side of canvas
+		dx  = dx * -1;
+		}
+		if( ball.y >= canvas.height - ball.r){ //bottom of canvas
+		dy = dy * -1;
+		}
+		if(ball.y <= ball.r) { //top of canvas
+		dy= dy * -1; 
+		}
+
+        
+        window.requestAnimationFrame(repeatme);
+		
+				//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			//Up arrow key pressed
+			case 38:
+			dy=-1;
+			console.log('Up arrow key pressed!');
+			break;	
+				
+			//Down arrow key pressed
+			case 40:
+			dy = 2.8;
+			console.log('Up arrow key pressed!');
+			break;	
+			// key code for left arrow
+			case 37:
+			dx = -1;
+			console.log('left arrow key pressed!');
+			break;
+
+			// key code for right arrow
+			case 39:
+			dx = 1;
+			console.log('right arrow key pressed!');
+			break;
+			}
+		});
+		
+	canvas.addEventListener("click", function(event) { 
+		//var mouse = { //getting the mouse position
+		ball.x = event.clientX - canvasPos.x, 
+		ball.y = event.clientY - canvasPos.y
+		//}
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+        ctx.fill();
+        noClicks += 1;
+        console.log(noClicks);
+      });
+		
+		
+      }
+	
+	 repeatme();
+	 
+
+
+	/*	// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		}); */
+
+
+    </script>
+
+  </body>
+
+</html>

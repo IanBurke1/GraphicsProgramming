@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<title>Transformations</title>
+		<meta charset="UTF-8">
+	<style type="text/css">
+       body {
+          background-color: white;
+		}
+	  canvas{
+	  
+		border: 1px solid grey;
+		}
+ 
+	</style>
+ </head>
+<body>
+	<canvas id="transcan" width="700" height="700"></canvas>
+		<script type="text/javascript">
+			// Gets a handle to the element with id canvas.
+			var canvas = document.getElementById('transcan');
+			// Get a 2D context for the canvas.
+			var ctx = canvas.getContext('2d');
+			//Global Variables
+			var steps = 0; 
+			var nosteps = 0;
+			ctx.translate(30,30);
+			
+			//Functions
+			//Pacman function to draw pacman
+			var pacman = {
+				x: 50,
+				y: 50,
+				size: 40,
+				//draw the pacman
+				drawPacman: function(size) {
+					//Pacman
+					ctx.beginPath();
+					//Center of circle. radius = 0 so that his mouth starts in the center
+					ctx.arc(this.x,this.y,0,1*Math.PI,1*Math.PI);
+					//Start Angle. Making Pacmans mouth. 
+					ctx.arc(this.x,this.y,this.size,0.5,1.8*Math.PI);
+					//End Angle
+					ctx.arc(this.x,this.y,0,1*Math.PI,1*Math.PI);
+					ctx.fillStyle = "rgb(255, 255, 0)";
+					ctx.fill();
+					ctx.stroke();
+					
+					//pacmans eye
+					ctx.beginPath();
+					ctx.arc(this.x,this.y-17,5,0,2*Math.PI);
+					ctx.fillStyle = "rgb(0,0,0)";
+					ctx.fill();
+					ctx.stroke();
+				}
+			};//end pacman
+			
+			//clear function to clear the canvas
+			function clear() {
+				ctx.save();
+				ctx.setTransform(1, 0, 0, 1, 0, 0);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			    ctx.restore();
+			}//end clear
+			
+			//Repeatme function to create the animation
+			function repeatme(){
+				steps++;
+			
+				clear(); //Clear function before the drawPacman so that if clears the canvas after pacman moves
+				pacman.drawPacman(); //calling draw method from pacman
+				 //counter
+				ctx.translate(1,0); //translate the object
+				
+				if(steps%400 == 0) //If pacman gets to 400 count (steps) then..
+				ctx.rotate((Math.PI/180) * 90); //rotating the object. (degrees*math.PI/180)
+				
+				
+				window.requestAnimationFrame(repeatme);
+			}
+			//Calling the function to run 
+			repeatme();
+			
+			
+	</script>
+ </body>
+</html>

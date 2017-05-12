@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+			
+		td {
+			border: 1px solid black;
+			height: 50px;
+			width: 50px;
+			}
+			
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball" width="500" height="500"></canvas>
+		
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvasOne.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		// Make the fill style red.
+		//ctx.fillStyle = "rgb(0, 255, 0)";
+		//ctx.fillRect(500,500,150,100);
+	  //Left line
+	 ctx.beginPath();
+      ctx.moveTo(50, 450);
+      ctx.lineTo(50, 50);
+      ctx.stroke();
+	  //Bottom line
+	   ctx.beginPath();
+      ctx.moveTo(50, 450);
+      ctx.lineTo(450, 450);
+      ctx.stroke();
+	  //Right line
+	  ctx.beginPath();
+      ctx.moveTo(450, 450);
+      ctx.lineTo(450, 50);
+      ctx.stroke();
+	  //Top Line
+	  ctx.beginPath();
+      ctx.moveTo(50, 50);
+      ctx.lineTo(450, 50);
+      ctx.stroke();
+	  //left middle vertical line
+	  ctx.beginPath();
+      ctx.moveTo(175, 450);
+      ctx.lineTo(175, 50);
+      ctx.stroke();
+	  //right middle vertical line
+	  ctx.beginPath();
+      ctx.moveTo(320, 450);
+      ctx.lineTo(320, 50);
+      ctx.stroke();
+	  //Top middle horizontal line
+	  ctx.beginPath();
+      ctx.moveTo(50, 185);
+      ctx.lineTo(450, 185);
+      ctx.stroke();
+	  //Bottom middle horizontal line
+	  ctx.beginPath();
+      ctx.moveTo(50, 320);
+      ctx.lineTo(450, 320);
+      ctx.stroke();
+		  	
+		 /*var noClicks = 0;		
+		  //Changing the global corodinates to local canvas corodinates
+		 var canvasPos = {
+			x: canvas.offsetLeft, 
+			y: canvas.offsetTop
+			};	
+		  //canvas width and height for clearRect
+		 var width = "500";
+		 var height = "500";
+		 //Creating the velocity of the ball	
+		 var dy = 2.8;
+		 var dx = 1; 
+		 //Creating the ball object 
+	     var ball = {
+		  x: 50,
+		  y: 10,
+		  r: 15,
+		  xVel: -dx ,
+		  yVel:0
+		  }
+		  
+	   // A function to repeat every time the animation loops.
+      function repeatme() {
+        // Draw the ball (stroked, not filled).
+        ctx.beginPath();
+		//creating the circle shape
+        ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+		ctx.clearRect(0, 0, width, height);
+		ctx.fillStyle = "rgb(255, 165, 0)"; //filling in the colour
+		ctx.fill(); //fill the ball with colour
+		ctx.stroke();
+		
+		
+		ball.x+=dx; 
+		ball.y+=dy; 
+		
+			
+		if( ball.x>=490){
+		dx = -1;
+		}
+		if (ball.x<= 9) {
+		dx  =1;
+		}
+		if( ball.y<=9){
+		dy = 2.8;
+		}
+		if(ball.y>=490) {
+		dy=-1; 
+		
+		}
+
+        
+        window.requestAnimationFrame(repeatme);
+		
+				//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			//Up arrow key pressed
+			case 38:
+			dy=-1;
+			console.log('Up arrow key pressed!');
+			break;	
+				
+			//Down arrow key pressed
+			case 40:
+			dy = 2.8;
+			console.log('Up arrow key pressed!');
+			break;	
+			// key code for left arrow
+			case 37:
+			dx = -1;
+			console.log('left arrow key pressed!');
+			break;
+
+			// key code for right arrow
+			case 39:
+			dx = 1;
+			console.log('right arrow key pressed!');
+			break;
+			}
+		});
+		
+	canvas.addEventListener("click", function(event) { 
+		//var mouse = { //getting the mouse position
+		ball.x = event.clientX - canvasPos.x, 
+		ball.y = event.clientY - canvasPos.y
+		//}
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
+        ctx.fill();
+        noClicks += 1;
+        console.log(noClicks);
+      });
+		
+		
+      }
+	
+	 repeatme();
+	 */
+	
+
+
+	/*	// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		}); */
+
+
+    </script>
+
+  </body>
+
+</html>
